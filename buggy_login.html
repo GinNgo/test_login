@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buggy Login Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: none; /* Cố tình ẩn để giả lập tải trang chậm (BUG-010) */
+        }
+        
+        /* BUG-LOGIN-006: Fix cứng width 900px, khi mở trên điện thoại hoặc xoay ngang sẽ bị mất khung */
+        .login-container {
+            width: 900px; 
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        /* BUG-LOGIN-004: Nút checkbox quá nhỏ, không theo chuẩn Accessibility */
+        .remember-checkbox {
+            width: 8px; 
+            height: 8px;
+            margin-right: 5px;
+        }
+
+        .btn-login {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        /* BUG-LOGIN-005: Canh vị trí tuyệt đối sai cách, khi zoom lên 150% icon sẽ bay ra ngoài */
+        .eye-icon {
+            position: absolute;
+            right: -20px; 
+            top: 10px;
+            cursor: pointer;
+        }
+
+        .social-btn {
+            background: #db4437;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        /* BUG-LOGIN-002: Khoảng trống lớn cố tình đẩy nút Login xuống sâu, trên Mobile bàn phím sẽ đè lên */
+        .mobile-spacing {
+            height: 50vh; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Đăng Nhập (Buggy Version)</h2>
+
+    <div id="login-form">
+        
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="text" id="email" tabindex="1" placeholder="Nhập email...">
+        </div>
+
+        <div class="form-group">
+            <label>Password:</label>
+            <input type="text" id="password" tabindex="3" placeholder="Nhập mật khẩu...">
+            <span class="eye-icon">👁</span> </div>
+
+        <div class="form-group">
+            <input type="checkbox" id="remember" class="remember-checkbox">
+            <label for="remember" style="font-size: 12px;">Ghi nhớ đăng nhập</label>
+        </div>
+
+        <div class="mobile-spacing">
+            <p style="color: grey; font-size: 12px; text-align:center;">
+                (Khoảng trống này giả lập việc form quá dài trên Mobile)
+            </p>
+        </div>
+
+        <button class="btn-login" id="btnLogin" tabindex="2" onclick="login()">Đăng Nhập</button>
+
+        <button class="social-btn">Đăng nhập bằng Google</button>
+    </div>
+</div>
+
+<script>
+    // BUG-LOGIN-010: Giả lập load trang cực chậm (3 giây sau mới hiện form)
+    // Trong thực tế có thể là 10s, nhưng để 3s để bạn đỡ mất thời gian khi code
+    setTimeout(function() {
+        document.body.style.display = 'block';
+    }, 3000);
+
+    // Xử lý nút Đăng nhập
+    function login() {
+        let email = document.getElementById('email').value;
+        let pass = document.getElementById('password').value;
+
+        // Cố tình bỏ qua bước validate email (BUG-007)
+        if(email === "" || pass === "") {
+            alert("Vui lòng nhập đủ thông tin!");
+        } else {
+            alert("Đăng nhập giả lập thành công (dù thông tin bị sai định dạng)!");
+        }
+    }
+
+    // BUG-LOGIN-001: Hàm chặn phím Enter (Ngăn chặn hành vi mặc định)
+    document.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); 
+            console.log("Phím Enter đã bị vô hiệu hóa bởi bug cố ý.");
+        }
+    });
+</script>
+
+</body>
+</html>
