@@ -1,3 +1,4 @@
+#pip install selenium pandas openpyxl
 import os
 import time
 import pandas as pd
