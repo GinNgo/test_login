@@ -23,7 +23,6 @@ options.add_experimental_option('excludeSwitches', ['enable-logging'])
 driver = webdriver.Chrome(options=options)
 driver.maximize_window()
 
-# URL đã được cập nhật link GitHub xịn xò
 URL = "https://ginngo.github.io/test_login/buggy_login.html"
 
 try:
